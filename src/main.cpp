@@ -14,9 +14,6 @@
 
 using namespace pimoroni;
 
-#define DISPLAY_WIDTH 320
-#define DISPLAY_HEIGHT 240
-
 const uint16_t timePerFrame =  1000000 / FPS; 
 static float frameRate = 0;
 static uint32_t currentTime = 0, lastTime = 0, frameTime = 0;
@@ -69,7 +66,7 @@ void printDebugCpuRamLoad()
 
 int main() {
     stdio_init_all();
-    st7789 = new ST7789(DISPLAY_WIDTH, DISPLAY_HEIGHT, ROTATE_180, parallel_bus);
+    st7789 = new ST7789(WINDOW_WIDTH, WINDOW_HEIGHT, ROTATE_180, parallel_bus);
     graphics = new PicoGraphics_PenRGB565(st7789->width, st7789->height, nullptr);
     graphics->color = 0x0000;
     graphics->clear();
