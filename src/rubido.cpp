@@ -242,11 +242,11 @@ void Game()
 		// if it's the winning game play the winning sound and show the form with the winning message
 		if (IsWinningGame())
 		{
-			PrintForm("Congrats you have solved the\npuzzle! Try a new difficulty!\n\nPress (A) to continue");
+			PrintForm("Congrats you have solved the\npuzzle! Try a new difficulty!\n\nPress (B) to continue");
 		}
 		else // show the loser messager, play loser sound
 		{
-			PrintForm("You couldn't solve the puzzle!\nDon't give up, try it again!\n\nPress (A) to continue");
+			PrintForm("You couldn't solve the puzzle!\nDon't give up, try it again!\n\nPress (B) to continue");
 		}
 	}
 
