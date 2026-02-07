@@ -48,10 +48,6 @@ typedef struct CSelector CSelector;
 #define XOffSet 10
 #define YOffSet 11
 
-#define SAMPLERATE 11025 //higher sounds a bit better but affects performance
-#define PIEZEOPIN 12
-#define PIEZEOENABLEPIN 13
-
 #define COLOR_SWAP(c) ((uint16_t)((((c) >> 8) | (c) << 8)))
 #define COLOR(r,g,b) COLOR_SWAP(((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3))
 
