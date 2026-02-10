@@ -31,6 +31,17 @@ ParallelPins parallel_bus = {
 ST7789 *st7789;
 PicoGraphics_PenRGB565 *graphics;
 
+extern "C" char __StackLimit;
+extern "C" char __bss_end__;
+
+int getFreeRam()
+{
+    int totalHeap = &__StackLimit  - &__bss_end__;
+    struct mallinfo m = mallinfo();
+    int usedHeap = m.uordblks;
+    return totalHeap - usedHeap;
+}
+
 uint8_t readButtons()
 {
     uint8_t ret = 0;
@@ -59,7 +70,7 @@ void printDebugCpuRamLoad()
         
         int fps_int = (int)frameRate;
         int fps_frac = (int)((frameRate - fps_int) * 100);
-        sprintf(debuginfo, "F:%3d.%2d", fps_int, fps_frac);
+        sprintf(debuginfo, "F:%3d.%2d R:%d", fps_int, fps_frac, getFreeRam());
         bufferPrint(&fb, 0, 0, debuginfo, 0xFFFF,  0x0000, 1, font);
     }
 }
