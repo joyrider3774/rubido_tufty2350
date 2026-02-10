@@ -1,6 +1,6 @@
 #include <cstdint>
 #include "commonvars.h"
-#include "Framebuffer.h"
+#include "framebuffer.h"
 #include "cboardparts.h"
 #include "cselector.h"
 #include "cmainmenu.h"
