@@ -5,13 +5,14 @@
 #include "framebuffer.h"
 #include "cselector.h"
 #include "cmainmenu.h"
-
+#include "savestate.h"
 #define PROGMEM
 
 typedef struct CBoardParts CBoardParts;
 typedef struct CPeg CPeg;
 typedef struct SPoint SPoint;
 typedef struct CSelector CSelector;
+typedef struct SaveData SaveData;
 
 
 
@@ -69,7 +70,6 @@ extern Framebuffer fb;
 extern CSelector *GameSelector;
 extern bool PrintFormShown;
 extern int Moves;
-extern int BestPegsLeft[4]; // array that holds the best amount of pegs left for each difficulty
 extern int Difficulty;
 extern CBoardParts* BoardParts; // boardparts instance that will hold all the boardparts
 
@@ -84,5 +84,6 @@ extern unsigned int FrameTime, Frames;
 extern float CurrentMs;
 extern bool debugMode;
 extern int GameState; // the game state
+extern SaveData saveData;
 
 #endif

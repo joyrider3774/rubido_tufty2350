@@ -9,6 +9,7 @@
 #include "cselector.h"
 #include "commonvars.h"
 #include "framebuffer.h"
+#include "savestate.h"
 #include "glcdfont.h"
 #include "images/veryeasy1_RGB565_BE.h"
 #include "images/veryhard1_RGB565_BE.h"
@@ -21,53 +22,6 @@
 #include "images/infoveryhard_RGB565_BE.h"
 #include "images/background_RGB565_BE.h"
 
-// Load the settings, if there isn't a settings file, set some initial values
-void LoadSettings()
-{
-	// SDFile* SettingsFile;
-	// SettingsFile = pd->file->open("settings.dat", kFileReadData);
-	// if (SettingsFile)
-	// {
-	// 	pd->file->read(SettingsFile, &BestPegsLeft[VeryEasy], sizeof(int));
-	// 	pd->file->read(SettingsFile, &BestPegsLeft[Easy], sizeof(int));
-	// 	pd->file->read(SettingsFile, &BestPegsLeft[Hard], sizeof(int));
-	// 	pd->file->read(SettingsFile, &BestPegsLeft[VeryHard], sizeof(int));
-	// 	int tmp;
-	// 	pd->file->read(SettingsFile, &tmp, sizeof(int));
-	// 	setSoundOn(tmp);
-	// 	pd->file->read(SettingsFile, &tmp, sizeof(int));
-	// 	setMusicOn(tmp);
-	// 	pd->file->close(SettingsFile);
-	// }
-	// else
-	// {
-		BestPegsLeft[VeryEasy] = 0;
-		BestPegsLeft[Easy] = 0;
-		BestPegsLeft[Hard] = 0;
-		BestPegsLeft[VeryHard] = 0;
-		setSoundOn(true);
-	//}
-}
-
-// Save the settings
-void SaveSettings()
-{
-	// SDFile* SettingsFile;
-	// SettingsFile = pd->file->open("settings.dat", kFileWrite);
-	// if (SettingsFile)
-	// {
-	// 	pd->file->write(SettingsFile, &BestPegsLeft[VeryEasy], sizeof(int));
-	// 	pd->file->write(SettingsFile, &BestPegsLeft[Easy], sizeof(int));
-	// 	pd->file->write(SettingsFile, &BestPegsLeft[Hard], sizeof(int));
-	// 	pd->file->write(SettingsFile, &BestPegsLeft[VeryHard], sizeof(int));
-	// 	int tmp = isSoundOn();
-	// 	pd->file->write(SettingsFile, &tmp, sizeof(int));
-	// 	tmp = isMusicOn();
-	// 	pd->file->write(SettingsFile, &tmp, sizeof(int));
-	// 	pd->file->close(SettingsFile);
-	// }
-}
-
 void resetGlobals()
 {
 	PrintFormShown = false;
@@ -79,8 +33,7 @@ void resetGlobals()
 void setupGame()
 {
 	resetGlobals();
-	initSound();
-	LoadSettings();
+	loadSavedState();
 	BoardParts = CBoardParts_Create();
 	Menu = CMainMenu_Create();
 	GameSelector = CSelector_Create(4,4);
@@ -91,8 +44,7 @@ void terminateGame()
 	CBoardParts_Destroy(BoardParts);
 	CMainMenu_Destroy(Menu);
 	CSelector_Destroy(GameSelector);
-	deInitSound();
-	SaveSettings();
+	saveSavedState();
 }
 
 // procedure that calculates how many moves are possible in the current board state
@@ -228,9 +180,9 @@ void Game()
 	bufferPrint(&fb, 242, 69, Msg, COLOR_FOREGROUND, COLOR_FOREGROUND,1,font);
 
 	// Only show best pegs if it isn't 0
-	if (BestPegsLeft[Difficulty] != 0)
+	if (saveData.BestPegsLeft[Difficulty] != 0)
 	{
-		sprintf(Msg, "Best Pegs:%d", BestPegsLeft[Difficulty]);
+		sprintf(Msg, "Best Pegs:%d", saveData.BestPegsLeft[Difficulty]);
 		bufferPrint(&fb, 242, 85, Msg, COLOR_FOREGROUND, COLOR_FOREGROUND,1,font);
 	}
 	CBoardParts_Draw(BoardParts);
@@ -303,14 +255,14 @@ void Game()
 					// greater if so set te new value
 					if (MovesLeft() == 0)
 					{
-						if (BestPegsLeft[Difficulty] != 0)
+						if (saveData.BestPegsLeft[Difficulty] != 0)
 						{
-							if (PegsLeft() < BestPegsLeft[Difficulty])
-								BestPegsLeft[Difficulty] = PegsLeft();
+							if (PegsLeft() < saveData.BestPegsLeft[Difficulty])
+								saveData.BestPegsLeft[Difficulty] = PegsLeft();
 						}
 						else
-							BestPegsLeft[Difficulty] = PegsLeft();
-						SaveSettings();
+							saveData.BestPegsLeft[Difficulty] = PegsLeft();
+						saveSavedState();
 						// if it's the winning game play the winning sound and show the form with the winning message
 						if (IsWinningGame())
 						{

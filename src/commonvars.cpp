@@ -4,6 +4,7 @@
 #include "cboardparts.h"
 #include "cselector.h"
 #include "cmainmenu.h"
+#include "savestate.h"
 
 Framebuffer fb;
 
@@ -13,7 +14,6 @@ bool PrintFormShown = false;
 CBoardParts* BoardParts; // boardparts instance that will hold all the boardparts
 int Difficulty = VeryEasy;
 int Moves = 0;
-int BestPegsLeft[4]; // array that holds the best amount of pegs left for each difficulty
 
 //titlescreen
 CMainMenu* Menu;
@@ -26,4 +26,4 @@ unsigned int FrameTime, Frames;
 float CurrentMs;
 bool debugMode = false;
 int GameState = GSTitleScreenInit; // the game state
-
+SaveData saveData;
